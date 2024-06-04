@@ -13,7 +13,7 @@ import venta from "./routes/venta.js"
 import maquinaria from "./routes/maquinaria.js"
 import mantenimiento from "./routes/mantenimiento.js"
 
-
+const port = process.env.PORT || 4000;
 const app = express()
 app.use(cors())
 app.use(express.json())
