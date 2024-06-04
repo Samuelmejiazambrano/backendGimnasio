@@ -30,7 +30,7 @@ app.use("/api/venta",venta)
 app.use("/api/maquinas",maquinaria)
 app.use("/api/mantenimiento",mantenimiento)
 
-app.listen(process.env.PORT,()=>{
+app.listen(port,()=>{
     console.log(`Servidor escuchando en el puerto ${process.env.PORT}`);
     dbConexion()  
 })          
