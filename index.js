@@ -31,6 +31,6 @@ app.use("/api/maquinas",maquinaria)
 app.use("/api/mantenimiento",mantenimiento)
 
 app.listen(port,()=>{
-    console.log(`Servidor escuchando en el puerto ${process.env.PORT}`);
+    console.log(`Servidor escuchando en el puerto ${port}`);
     dbConexion()  
 })          
