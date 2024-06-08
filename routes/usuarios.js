@@ -21,7 +21,7 @@ usuario.post(
     // check("", "id no puede estar vacio").notEmpty(),
     // check("_id" ,"id minimo 2 numeros").isLength({ min: 4 }),
     // check("estado","Solo numeros").isNumeric(),
-    validarCampos,validarJWT
+    validarCampos
   ],
   httpUsuarios.postUsuario),
     
