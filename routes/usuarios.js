@@ -9,10 +9,10 @@ import helpersUsuarios from "../helpersClientes/usuario.js";
 const usuario = Router();
 
 usuario.get("/", httpUsuarios.getUsuario);
-usuario.get("/activos", httpUsuarios.getUsuarioActivo);
-usuario.get("/inactivos", httpUsuarios.getUsuarioInactivo);
+usuario.get("/activos", httpUsuarios.getUsuarioActivo,[validarJWT]);
+usuario.get("/inactivos", httpUsuarios.getUsuarioInactivo,[validarJWT]);
 
-usuario.get("/:_id", httpUsuarios.getUsuarioId);
+usuario.get("/:_id", httpUsuarios.getUsuarioId,[validarJWT]);
 usuario.post("/login", httpUsuarios.login);
 usuario.post(
   "/",     
@@ -39,7 +39,7 @@ usuario.put(
   [
     check("_id", "Se necesita un mongoId valido").isMongoId(),
     check("_id").custom(helpersUsuarios.validarExistaId),
-    validarCampos,
+    validarCampos,validarJWT
   ],
   httpUsuarios.putUsuarioActivar
 ),
@@ -48,7 +48,7 @@ usuario.put(
   [
     check("_id", "Se necesita un mongoCc valido").isMongoId(),
     check("_id").custom(helpersUsuarios.validarExistaId),
-    validarCampos,
+    validarCampos,validarCampos
   ],
   httpUsuarios.putUsuarioDesactivar
 )
