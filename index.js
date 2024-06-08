@@ -16,7 +16,7 @@ import mantenimiento from "./routes/mantenimiento.js"
 const port = process.env.PORT || 4600;
 const app = express()
 app.use(cors())
-this.app.use(express.static('public'))
+app.use(express.static('public'))
 app.use(express.json())
 app.use("/api/clientes",router)
 app.use("/api/ingreso",ingreso)
