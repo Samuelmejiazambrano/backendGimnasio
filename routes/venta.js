@@ -3,48 +3,43 @@ import httpVenta from "../controllers/venta.js";
 import { check } from "express-validator";
 import { validarCampos } from "../validaciones/validar.js";
 import helpersVenta from "../helpersClientes/venta.js";
+import { validarJWT } from "../middlewares/validar-jwt.js";
 
 const venta = Router();
 
-venta.get("/", httpVenta.getVenta);
-venta.get("/:_id", httpVenta.getVentaId);
-venta.post(
-  "/",
-  [
-   
+venta.get("/", validarJWT, httpVenta.getVenta);
+venta.get("/:_id", validarJWT, httpVenta.getVentaId);
+venta.post(         
+  "/",         
+  [        
     check("codigoProducto", "id no puede estar vacio").notEmpty(),
     check("codigoProducto" ,"id minimo 2 numeros").isLength({ min: 4 }),
-    // check("estado","Solo numeros").isNumeric(),
-    validarCampos
+    validarCampos,validarJWT
   ],
-  httpVenta.postVenta),
   
-// ingreso.put(
-//   "/:_id",
-//   [
-//     check("_id", "Se necesita un mongoCc valido").isMongoId(),
-//     check("_id").custom(helpersClientes.validarExistaId),
-//     validarCampos,
-//   ],
-//   httpIngresos.p
-// ),
+  httpVenta.postVenta
+);
+
 venta.put(
   "/activar/:_id",
   [
     check("_id", "Se necesita un mongoId valido").isMongoId(),
     check("_id").custom(helpersVenta.validarExistaId),
-    validarCampos,
+    validarCampos,validarJWT
   ],
+  
   httpVenta.putVentaActivar
-),
+);
+
 venta.put(
   "/desactivar/:_id",
   [
     check("_id", "Se necesita un mongoCc valido").isMongoId(),
     check("_id").custom(helpersVenta.validarExistaId),
-    validarCampos,
+    validarCampos,validarJWT
   ],
+  
   httpVenta.putventaDesactivar
-)
+);
 
-export default venta
+export default venta;

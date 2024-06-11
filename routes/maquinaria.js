@@ -1,27 +1,28 @@
 import { Router } from "express";
 import { check } from "express-validator";
 import { validarCampos } from "../validaciones/validar.js";
+import { validarJWT,generarJWT } from "../middlewares/validar-jwt.js";
 import httpMaquinaria from "../controllers/maquinaria.js";
 
 
 const maquinaria = Router();
 
-maquinaria.get("/", httpMaquinaria.getMaquinaria);
-maquinaria.get("/activos", httpMaquinaria.getMaquinariaActivo);
-maquinaria.get("/inactivos", httpMaquinaria.getMaquinariaInactivo);
-maquinaria.get("/:_id", httpMaquinaria.getMaquinariaCodigo);
+maquinaria.get("/",validarJWT, httpMaquinaria.getMaquinaria);
+maquinaria.get("/activos",[validarJWT], httpMaquinaria.getMaquinariaActivo);
+maquinaria.get("/inactivos",[validarJWT], httpMaquinaria.getMaquinariaInactivo);
+maquinaria.get("/:_id",[validarJWT], httpMaquinaria.getMaquinariaCodigo);
 
 maquinaria.post(
   "/",   httpMaquinaria.postMaquinaria);
   maquinaria.put(
-  "/actualizar/:_id", httpMaquinaria.putMaquinaria
+  "/actualizar/:_id",[validarJWT], httpMaquinaria.putMaquinaria
 );
   
 maquinaria.put(
-  "/activar/:_id", httpMaquinaria.putMaquinariaActivar
+  "/activar/:_id",[validarJWT], httpMaquinaria.putMaquinariaActivar
 ),
 maquinaria.put(
-  "/desactivar/:_id",  httpMaquinaria.putMaquinariaDesactivar
+  "/desactivar/:_id",[validarJWT],  httpMaquinaria.putMaquinariaDesactivar    
 )
 // ingreso.put(
 //   "/:_id",

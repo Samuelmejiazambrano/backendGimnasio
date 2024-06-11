@@ -8,11 +8,11 @@ import helpersUsuarios from "../helpersClientes/usuario.js";
 
 const usuario = Router();
 
-usuario.get("/", httpUsuarios.getUsuario);
-usuario.get("/activos", httpUsuarios.getUsuarioActivo,[validarJWT]);
-usuario.get("/inactivos", httpUsuarios.getUsuarioInactivo,[validarJWT]);
+usuario.get("/",[validarJWT], httpUsuarios.getUsuario);
+usuario.get("/activos",[validarJWT], httpUsuarios.getUsuarioActivo);
+usuario.get("/inactivos",[validarJWT], httpUsuarios.getUsuarioInactivo);
 
-usuario.get("/:_id", httpUsuarios.getUsuarioId,[validarJWT]);
+usuario.get("/:_id",[validarJWT],httpUsuarios.getUsuarioId);
 usuario.post("/login", httpUsuarios.login);
 usuario.post(
   "/",     
@@ -21,7 +21,7 @@ usuario.post(
     // check("", "id no puede estar vacio").notEmpty(),
     // check("_id" ,"id minimo 2 numeros").isLength({ min: 4 }),
     // check("estado","Solo numeros").isNumeric(),
-    validarCampos
+    validarCampos,validarJWT
   ],
   httpUsuarios.postUsuario),
     
@@ -53,7 +53,7 @@ usuario.put(
   httpUsuarios.putUsuarioDesactivar
 )
 usuario.put(
-  "/update/:_id",
+  "/update/:_id",[validarJWT],
   httpUsuarios.putUsuario
 )
 

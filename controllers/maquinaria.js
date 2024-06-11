@@ -41,8 +41,8 @@ putMaquinaria: async (req, res) => {
   }
 },
 getMaquinariaCodigo:async(req,res)=>{
-  const {codigo}=req.params
-  const maquinarias   =  await   maquinaria.findById(codigo)
+  const {_id}=req.params
+  const maquinarias   =  await   maquinaria.findById(_id)
   res.json({maquinarias})
 },
 getMaquinariaActivo: async (req, res) => {
@@ -61,5 +61,6 @@ getMaquinariaInactivo: async (req, res) => {
     res.status(500).json({ error: 'Error al obtener usuarios activos' });
   }
 },
+
 }
 export default httpMaquinaria

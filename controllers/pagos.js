@@ -51,5 +51,28 @@ const httpPagos = {
     });
     res.json(pagos);
   },
+  getPagoId:async(req,res)=>{
+    const {_id}=req.params
+    const pagos =  await   pago.findById(_id)
+    res.json({pagos})
+  },
+  
+  getPagoActivo: async (req, res) => {
+    try {
+      const pagosActivos = await pago.find({ estado: 1 }); 
+      res.json(pagosActivos);
+    } catch (error) {
+      res.status(500).json({ message: 'Error al obtener pagos activos', error });
+    }
+  },
+
+  getPagoInactivo: async (req, res) => {
+    try {
+      const pagosInactivos = await pago.find({ estado: 0 });
+      res.json(pagosInactivos);
+    } catch (error) {
+      res.status(500).json({ message: 'Error al obtener pagos inactivos', error });
+    }
+  },
 };
 export default httpPagos;

@@ -2,33 +2,30 @@ import { Router } from "express";
 import httpPagos from "../controllers/pagos.js";
 import { check } from "express-validator";
 import { validarCampos } from "../validaciones/validar.js";
+import { validarJWT, generarJWT } from "../middlewares/validar-jwt.js";
 import helpersPagos from "../helpersClientes/pagos.js";
-
 
 const pago = Router();
 
+// Aplica el middleware validarJWT a todas las rutas definidas a continuación
+pago.use(validarJWT);
+
+// Rutas sin protección con validarJWT
 pago.get("/", httpPagos.getPago);
-pago.get("/:codigo", httpPagos.getPago);
+pago.get("/activos", httpPagos.getPagoActivo);
+pago.get("/inactivos",httpPagos.getPagoInactivo);
+pago.get("/:_id", httpPagos.getPagoId);
+
+     
 pago.post(
   "/",
   [
-   
     check("codigo", "id no puede estar vacio").notEmpty(),
-    
-    // check("estado","Solo numeros").isNumeric(),
     validarCampos
   ],
-  httpPagos.postPago),
-  
-// pago.put(
-//   "/:codigo",
-//   [
-//     check("codigo", "Se necesita un mongoCc valido").isMongoId(),
-//     check("codigo").custom(helpersPagos.validarExistaId),
-//     validarCampos,
-//   ],
-//   httpPagos.postPago
-// ),
+  httpPagos.postPago
+);
+
 pago.put(
   "/activar/:_id",
   [
@@ -37,7 +34,8 @@ pago.put(
     validarCampos,
   ],
   httpPagos.putPagoActivar
-),
+);
+
 pago.put(
   "/desactivar/:_id",
   [
@@ -46,9 +44,11 @@ pago.put(
     validarCampos,
   ],
   httpPagos.putPagoDesactivar
-),
+);
+
 pago.get("/total/plan/:id", httpPagos.totalPagosPlan);
 pago.get("/total/clientes/:id", httpPagos.totalPagosCliente);
 pago.get("/total/fechas", httpPagos.totalPagosEntreFechas);
+pago.get("/:_id", validarJWT, httpPagos.getPagoId);
 
-export default pago
+export default pago;

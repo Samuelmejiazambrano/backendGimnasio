@@ -2,21 +2,22 @@ import { Router } from "express";
 import { check } from "express-validator";
 import { validarCampos } from "../validaciones/validar.js";
 import httpInventario from "../controllers/inventario.js";
+import { validarJWT,generarJWT } from "../middlewares/validar-jwt.js";
 import helpersInventario from "../helpersClientes/inventario.js";
 
 const inventario = Router();
 
-inventario.get("/", httpInventario.getInventario);
-inventario.get("/total", httpInventario.getTotal);
+inventario.get("/",validarJWT, httpInventario.getInventario);
+inventario.get("/total",validarJWT, httpInventario.getTotal);
 
-inventario.get("/:_id", httpInventario.getInventario);
+inventario.get("/:_id",validarJWT, httpInventario.getInventario);
 
 inventario.post(
   "/",
   [
       
     check("codigo", "id no puede estar vacio").notEmpty(),
-    validarCampos
+    validarCampos,validarJWT
   ],
   httpInventario.postInventario),    
    
@@ -34,7 +35,7 @@ inventario.put(
   [
     check("_id", "Se necesita un mongoId valido").isMongoId(),
     check("_id").custom(helpersInventario.validarExistaId),
-    validarCampos,
+    validarCampos,validarJWT
   ],
   httpInventario.putInventarioActivar
 ),
@@ -43,12 +44,12 @@ inventario.put(
   [
     check("_id", "Se necesita un mongoCc valido").isMongoId(),
     check("_id").custom(helpersInventario.validarExistaId),
-    validarCampos,
+    validarCampos,validarJWT
   ],
   httpInventario.putInventarioDesactivar
 ),
 
-inventario.put("/actualizar/:_id", httpInventario.putInventario);
-inventario.delete("/:_id", httpInventario.deleteInventario);
+inventario.put("/actualizar/:_id",validarJWT, httpInventario.putInventario);
+inventario.delete("/:_id",validarJWT, httpInventario.deleteInventario);
 
 export default inventario

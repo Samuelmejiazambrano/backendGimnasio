@@ -3,31 +3,23 @@ import httpIngresos from "../controllers/ingresos.js";
 import { check } from "express-validator";
 import { validarCampos } from "../validaciones/validar.js";
 import helpersIngreso from "../helpersClientes/ingreso.js";
+import { validarJWT } from "../middlewares/validar-jwt.js";
 
 const ingreso = Router();
 
-ingreso.get("/", httpIngresos.getIngreso);
-ingreso.get("/:_id", httpIngresos.getIngreso);
+ingreso.get("/", validarJWT, httpIngresos.getIngreso);
+ingreso.get("/:_id", validarJWT, httpIngresos.getIngreso);
 ingreso.post(
-  "/",
+  "/",       
   [
-   
     check("codigo", "id no puede estar vacio").notEmpty(),
     check("codigo" ,"id minimo 2 numeros").isLength({ min: 4 }),
-    // check("estado","Solo numeros").isNumeric(),
     validarCampos
   ],
-  httpIngresos.postIngreso),
-  
-// ingreso.put(
-//   "/:_id",
-//   [
-//     check("_id", "Se necesita un mongoCc valido").isMongoId(),
-//     check("_id").custom(helpersClientes.validarExistaId),
-//     validarCampos,
-//   ],
-//   httpIngresos.p
-// ),
+  validarJWT,          
+  httpIngresos.postIngreso
+);
+
 ingreso.put(
   "/activar/:_id",
   [
@@ -35,17 +27,19 @@ ingreso.put(
     check("_id").custom(helpersIngreso.validarExistaId),
     validarCampos,
   ],
+  validarJWT,
   httpIngresos.putIngresoActivar
-),
+);
+
 ingreso.put(
   "/desactivar/:_id",
   [
-    check("_id", "Se necesita un mongoCc valido").isMongoId(),
+    check("_id","Se necesita un mongoCc valido").isMongoId(),
     check("_id").custom(helpersIngreso.validarExistaId),
     validarCampos,
   ],
+  validarJWT,
   httpIngresos.putIngresoDesactivar
-)
+);
 
-
-export default ingreso
+export default ingreso;

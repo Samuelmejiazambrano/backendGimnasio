@@ -6,7 +6,6 @@ const pagoSchema=new mongoose.Schema({
     idCliente:{type:mongoose.Schema.Types.ObjectId,ref:'Cliente'},
     valor:{type:Number,default:0},
     estado:{type:Number,default:1},
-
     createAt:{type:Date,default:Date.now}
 })
 

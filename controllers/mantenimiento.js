@@ -16,7 +16,7 @@ const httpMantenimiento={
      await mantenimientos.save()
      res.json({})
 },
-putMantenimientoActivar:async(req,res)=>{
+putMantenimientoActivar:async(req,res)=>{   
   const {_id}=req.params
   const mantenimientos = await mantenimiento.findByIdAndUpdate(_id,{estado:1},{new:true})
   res.json({mantenimientos})
@@ -34,15 +34,15 @@ putMantenimiento: async (req, res) => {
   try {
     const { _id } = req.params;
     const { codigo,descripcion,idMaquina,fecha,responsable,precio} = req.body;
-    const mantenimientoActualizado = await mantenimiento.findByIdAndUpdate(_id, {  codigo,descripcion,idMaquina,fecha,responsable,precio}, { new: true });
+    const mantenimientoActualizado = await mantenimiento.findByIdAndUpdate(_id, {codigo,descripcion,idMaquina,fecha,responsable,precio}, { new: true });
     res.json({ maquina: mantenimientoActualizado });
-  } catch (error) {
+  } catch (error) {     
     res.status(500).json({ error: 'Error al actualizar el mantenimiento' });
-  }
+  }    
 },
 getMantenimientoCodigo:async(req,res)=>{
-  const {codigo}=req.params
-  const mantenimientos   =  await   mantenimiento.findById(codigo)
+  const {_id}=req.params
+  const mantenimientos   =  await   mantenimiento.findById(_id)
   res.json({mantenimientos})
 },
 }

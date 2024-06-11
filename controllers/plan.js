@@ -47,8 +47,8 @@ putPlanDesactivar:async(req,res)=>{
 
 },
 getPlanCodigo:async(req,res)=>{
-  const {codigo}=req.params
-  const planes  =  await plan.findById(codigo)
+  const {_id}=req.params
+  const planes  =  await plan.findById(_id)
   res.json({planes})
 },
 putPlan: async (req, res) => {
