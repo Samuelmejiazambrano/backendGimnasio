@@ -100,7 +100,40 @@ async listarPorPlan(req, res) {
   const clientes = await Cliente.find({ plan: plan });
   res.json(clientes);
 },
+putSeguimiento: async (req, res) => {
+  const { clienteId, seguimientoId } = req.params;
+  const { fechaIngreso, peso, imc, brazo, cintura, pie, estatura } = req.body;
 
+  try {
+    const cliente = await Cliente.findById(clienteId);
+
+    if (!cliente) {
+      return res.status(404).json({ error: "Cliente no encontrado" });
+    }
+
+    const seguimiento = cliente.seguimiento.id(seguimientoId);
+
+    if (!seguimiento) {
+      return res.status(404).json({ error: "Seguimiento no encontrado para este cliente" });
+    }
+
+    seguimiento.fechaIngreso = fechaIngreso;
+    seguimiento.peso = peso;
+    seguimiento.imc = imc;
+    seguimiento.brazo = brazo;
+    seguimiento.cintura = cintura;
+    seguimiento.pie = pie;
+    seguimiento.estatura = estatura;
+
+    await cliente.save();
+
+    res.json({ cliente }); // Devolver el cliente actualizado (opcional)
+  } catch (error) {
+    console.error("Error al actualizar seguimiento:", error);
+    res.status(500).json({ error: "Hubo un error al intentar actualizar el seguimiento" });
+  }
+},
+  
 }
 export default httpcliente
 

@@ -7,7 +7,7 @@ import { validarJWT } from "../middlewares/validar-jwt.js";
 
 const router = Router();
 
-router.get("/", validarJWT, httpClientes.getCliente);
+router.get("/", httpClientes.getCliente);
 router.get("/:_id", validarJWT, httpClientes.getClienteCc);
 router.post(
   "/",
@@ -16,7 +16,7 @@ router.post(
     check("cc").isLength({ min: 8 }),
     validarCampos
   ],
-  validarJWT,
+  validarJWT,  
   httpClientes.postCliente
 );
 router.post(
@@ -35,10 +35,10 @@ router.put(
     check("_id").custom(helpersClientes.validarExistaId),
     validarCampos,
   ],
-  validarJWT,
-  httpClientes.putcliente
+  validarJWT,       
+  httpClientes.putcliente              
 );
-router.put(
+router.put(              
   "/activar/:_id",
   [
     check("_id", "Se necesita un mongoId valido").isMongoId(),
@@ -64,5 +64,14 @@ router.get("/listar/cumpleanos", validarJWT, httpClientes.getCumple);
 router.get('/clientes/plan/:plan', validarJWT, httpClientes.listarPorPlan);
 
 router.get("/listar/seguimiento/:id", validarJWT, httpClientes.listarSeguimiento);      
+router.put(
+  "/:clienteId/seguimiento/:seguimientoId",
+  [
+    check("clienteId", "Se necesita un mongoId válido para el cliente").isMongoId(),
+    check("seguimientoId", "Se necesita un mongoId válido para el seguimiento").isMongoId(),
+    validarCampos,
+  ],
+  httpClientes.putSeguimiento
+);
 
 export default router;
