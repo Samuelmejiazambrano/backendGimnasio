@@ -7,6 +7,7 @@ const inventarioSchema = new mongoose.Schema({
   valor: { type: Number, default: 0 },
   cantidad: { type: Number, required: true},
   stock: { type: Number, default: 0 } ,
+  estado:{type:Number,default:1},
   createAt: { type: Date, default: Date.now },
 });   
 

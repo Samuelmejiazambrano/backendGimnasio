@@ -15,34 +15,34 @@ const httpcliente={
     const { cc,nombre,fechaIngreso,fechaNac,edad,direccion,telefono,estado,foto,plan,seguimiento}=req.body
     const cliente = new Cliente({cc,nombre,fechaIngreso,fechaNac,edad,direccion,telefono,estado,foto,plan,seguimiento});
 
-     await cliente.save()
-     res.json({cliente})
+     await cliente.save()        
+     res.json({cliente})      
 },
 postSeguimiento: async (req, res) => {
-    const {_id} = req.params;
+  const { _id } = req.params;
+  const { fechaIngreso, peso, brazo, cintura, pie, estatura } = req.body;
 
-    const { fechaIngreso, peso, imc, brazo, cintura, pie, estatura } = req.body;
+  const cliente = await Cliente.findById(_id);
 
-    const cliente = await Cliente.findById(_id);
+  if (!cliente) {
+    return res.status(404).json({ error: "Cliente no encontrado" });
+  }
 
-    if (!cliente) {
-      return res.status(404).json({ error: "Cliente no encontrado" });
-    }
+  const imc = peso / ((estatura / 100) ** 2).toFixed(3);; // Calcular IMC
 
-    cliente.seguimiento.push({  
-      fechaIngreso,   
-      peso,   
-      imc,
-      brazo,
-      cintura,
-      pie,
-      estatura       
-    });
+  cliente.seguimiento.push({  
+    fechaIngreso,   
+    peso,   
+    imc,
+    brazo,
+    cintura,
+    pie,
+    estatura       
+  });
 
-    await cliente.save();
-   
-    res.json({ cliente });
-  
+  await cliente.save();
+ 
+  res.json({ cliente });
 },
       
 putClienteActivar:async(req,res)=>{
@@ -102,7 +102,7 @@ async listarPorPlan(req, res) {
 },
 putSeguimiento: async (req, res) => {
   const { clienteId, seguimientoId } = req.params;
-  const { fechaIngreso, peso, imc, brazo, cintura, pie, estatura } = req.body;
+  const { fechaIngreso, peso, brazo, cintura, pie, estatura } = req.body;
 
   try {
     const cliente = await Cliente.findById(clienteId);
@@ -117,6 +117,8 @@ putSeguimiento: async (req, res) => {
       return res.status(404).json({ error: "Seguimiento no encontrado para este cliente" });
     }
 
+    const imc = peso / ((estatura / 100) ** 2); 
+
     seguimiento.fechaIngreso = fechaIngreso;
     seguimiento.peso = peso;
     seguimiento.imc = imc;
@@ -127,13 +129,12 @@ putSeguimiento: async (req, res) => {
 
     await cliente.save();
 
-    res.json({ cliente }); // Devolver el cliente actualizado (opcional)
+    res.json({ cliente });
   } catch (error) {
     console.error("Error al actualizar seguimiento:", error);
     res.status(500).json({ error: "Hubo un error al intentar actualizar el seguimiento" });
   }
 },
-  
 }
 export default httpcliente
 

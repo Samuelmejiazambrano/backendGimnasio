@@ -1,10 +1,12 @@
 import venta from "../models/venta.js";
-import { json } from "express";
+import plan from "../models/plan.js";
+
+
 import inventario from "../models/inventario.js";
 
 const httpVenta={
   getVenta:async (req,res)=>{
-    const ventas  =  await  venta.find()
+    const ventas  =  await  venta.find().populate('codigoProducto');
     res.json({ventas})
   
 },
@@ -12,14 +14,12 @@ postVenta: async (req, res) => {
     const { fechaInicio,fechaFin,codigoProducto,  valorUnitario, totalVentas, cantidad } = req.body;
 
     try {
-        // Check if the product exists in inventory
         const producto = await inventario.findById(codigoProducto);
 
         if (!producto) {
             return res.status(404).json({ error: "Producto no encontrado en el inventario" });
         }
 
-        // Check if there is enough quantity in inventory
         if (producto.cantidad < cantidad) {
             return res.status(400).json({ error: "Cantidad insuficiente en inventario" });
         }

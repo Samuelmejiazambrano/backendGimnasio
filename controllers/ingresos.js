@@ -1,10 +1,11 @@
 import ingreso from "../models/ingreso.js";
+
 import { json } from "express";
 
 
 const httpIngresos={
   getIngreso:async (req,res)=>{
-    const ingresos  =  await  ingreso.find()
+    const ingresos = await ingreso.find().populate('cliente').populate('sede');
     res.json({ingresos})
   
 },
@@ -13,7 +14,7 @@ const httpIngresos={
     const { codigo,cliente,sede}=req.body
     const ingresos = new ingreso({codigo,cliente,sede});
 
-     await ingresos.save()
+     await ingresos.save()        
      res.json({ingresos})
 },
 putIngresoActivar:async(req,res)=>{

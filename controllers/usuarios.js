@@ -88,51 +88,48 @@ const httpUsuario = {
   },
   
   async login(req, res) {
-    const { email, password} = req.body;
+    const { email, password } = req.body;
     try {
-       
-      
-        const usuario = await Usuario.findOne({ email });
-        if (!usuario) {
-            return res.status(400).json({
-                mensaje: 'CorreoOO o contraseña incorrectos'
-            });
-        }
-       
-        
-        if (usuario.estado === 1) {
-            return res.status(400).json({
-                mensaje: 'Correo o contraseña incorrectosssss'
-            });
-        }
-      
-        
-        const validarPassword = await bcryptjs.compare(password, usuario.password);
-        if (!validarPassword) {
-            return res.status(400).json({
-                mensaje: 'Correo o contraseñaaaaaa incorrectos'
-            });
-        }
-    
-        
-        const token = jwt.sign({
-            id: usuario._id,
-            nombre: usuario.nombre,
-            correo: usuario.email,
-            rol: usuario.rol
-        }, process.env.SECRETORPRIVATEKEY, { expiresIn: '100y' });
-        res.json({
-            usuario,
-            token
+      const usuario = await Usuario.findOne({ email });
+      if (!usuario) {
+        return res.status(400).json({
+          mensaje: 'Correo o contraseña incorrectos'
         });
+      }
+  
+      if (usuario.estado === 1) {
+        return res.status(400).json({
+          mensaje: 'Cuenta desactivada. Contacte con el administrador.'
+        });
+      }
+  
+      const validarPassword = await bcryptjs.compare(password, usuario.password);
+      if (!validarPassword) {
+        return res.status(400).json({
+          mensaje: 'Correo o contraseña incorrectos'
+        });
+      }
+  
+      const token = jwt.sign({
+        id: usuario._id,
+        nombre: usuario.nombre,
+        correo: usuario.email,
+        rol: usuario.rol
+      }, process.env.SECRETORPRIVATEKEY, { expiresIn: '100y' });
+  
+      res.json({
+        usuario,
+        token
+      });
     } catch (error) {
       console.log(error);
-        res.status(500).json({
-            mensaje: 'Error al iniciar sesión',
-            error
-        });
+      res.status(500).json({
+        mensaje: 'Error al iniciar sesión',
+        error
+      });
     }
-}
+  }
+  
 
 };
 export default httpUsuario;
