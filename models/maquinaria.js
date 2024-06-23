@@ -11,5 +11,5 @@ const maquinariaSchema = new mongoose.Schema({
   createAt: { type: Date, default: Date.now },
 });
     
-export default mongoose.model("maquinaria",maquinariaSchema);           
-                                           
+export default mongoose.model("maquinaria",maquinariaSchema);                    
+                                                          

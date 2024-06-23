@@ -9,6 +9,7 @@ const usuarioSchema = new mongoose.Schema({
   estado: { type: Number, default: 0 },
   rol: { type: String, required: true },
   password:{type:String,default:0},
+  recuperacion: { type: String, default: null } ,
   createAt: { type: Date, default: Date.now },
 });
 

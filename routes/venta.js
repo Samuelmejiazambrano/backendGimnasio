@@ -41,5 +41,7 @@ venta.put(
   
   httpVenta.putventaDesactivar
 );
+venta.put("/actualizar/:_id",validarJWT, httpVenta.putVenta);
+
 
 export default venta;

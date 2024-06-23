@@ -23,4 +23,4 @@ const clienteSchema=new mongoose.Schema({
     createAt:{type:Date,default:Date.now}    
 })
 
-export default mongoose.model("Cliente",clienteSchema)
+export default mongoose.model("Cliente",clienteSchema)       

@@ -3,13 +3,31 @@ import inventario from "../models/inventario.js";
 
 import { json } from "express";
 
-
+const formatNumber = (number) => {
+  return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+};
 const httpInventario={
 
   getInventario:async (req,res)=>{
     const inventarios  =  await  inventario.find()
     res.json({inventarios})
   
+},
+getInventarioActivo: async (req, res) => {
+  try {
+    const InventarioActivos = await inventario.find({ estado: 1 });
+    res.json({ sedes: InventarioActivos });
+  } catch (error) {
+    res.status(500).json({ error: 'Error al obtener usuarios activos' });
+  }
+},
+getInventarioInactivo: async (req, res) => {
+  try {
+    const InventarioinacActivos = await inventario.find({ estado: 0 });
+    res.json({ sedes: InventarioinacActivos });
+  } catch (error) {
+    res.status(500).json({ error: 'Error al obtener usuarios activos' });
+  }
 },
   postInventario:async(req,res)=>{
           
@@ -56,12 +74,12 @@ getTotal: async (req, res) => {
     const total = inventarios.reduce((acc, inventario) => {
       return acc + inventario.valor * inventario.cantidad;
     }, 0);
-    res.json({ total });
+    const formattedTotal = formatNumber(total);
+    res.json({ total: formattedTotal });
   } catch (error) {
     res.status(500).json({ error: "Error al obtener el total del inventario" });
   }
 },
-
 deleteInventario:async(req,res)=>{
   const {_id}=req.params
   const inventarios = await inventario.findByIdAndDelete(_id,({new:true}))

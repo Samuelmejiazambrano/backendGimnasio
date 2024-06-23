@@ -7,8 +7,7 @@ import helpersPagos from "../helpersClientes/pagos.js";
 
 const pago = Router();
 
-// Aplica el middleware validarJWT a todas las rutas definidas a continuación
-pago.use(validarJWT);
+// pago.use(validarJWT);
 
 // Rutas sin protección con validarJWT
 pago.get("/", httpPagos.getPago);
@@ -45,6 +44,7 @@ pago.put(
   ],
   httpPagos.putPagoDesactivar
 );
+pago.put("/actualizar/:_id",validarJWT, httpPagos.putPago);
 
 pago.get("/total/plan/:id", httpPagos.totalPagosPlan);
 pago.get("/total/clientes/:id", httpPagos.totalPagosCliente);

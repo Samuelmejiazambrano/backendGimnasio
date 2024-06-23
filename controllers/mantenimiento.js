@@ -4,7 +4,7 @@ import { json } from "express";
 
 const httpMantenimiento={
   getMantenimiento:async (req,res)=>{
-    const mantenimientos  =  await  mantenimiento.find()
+    const mantenimientos  =  await  mantenimiento.find().populate('responsable').populate('idMaquina')
     res.json({mantenimientos})
   
 },
@@ -14,7 +14,7 @@ const httpMantenimiento={
     const mantenimientos = new mantenimiento({codigo,descripcion,idMaquina,fecha,responsable,precio});
 
      await mantenimientos.save()
-     res.json({})
+     res.json({})    
 },
 putMantenimientoActivar:async(req,res)=>{   
   const {_id}=req.params
@@ -40,7 +40,7 @@ putMantenimiento: async (req, res) => {
     res.status(500).json({ error: 'Error al actualizar el mantenimiento' });
   }    
 },
-getMantenimientoCodigo:async(req,res)=>{
+getMantenimientoCodigo:async(req,res)=>{   
   const {_id}=req.params
   const mantenimientos   =  await   mantenimiento.findById(_id)
   res.json({mantenimientos})

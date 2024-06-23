@@ -8,7 +8,7 @@ import { validarJWT } from "../middlewares/validar-jwt.js";
 const ingreso = Router();
 
 ingreso.get("/", validarJWT, httpIngresos.getIngreso);
-ingreso.get("/:_id", validarJWT, httpIngresos.getIngreso);
+ingreso.get("/:_id", validarJWT, httpIngresos.getIngresoCodigo);
 ingreso.post(
   "/",       
   [
@@ -41,5 +41,6 @@ ingreso.put(
   validarJWT,
   httpIngresos.putIngresoDesactivar
 );
+ingreso.put("/actualizar/:_id",validarJWT, httpIngresos.putIngreso);
 
 export default ingreso;

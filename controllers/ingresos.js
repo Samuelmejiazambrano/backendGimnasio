@@ -33,8 +33,19 @@ putIngresoDesactivar:async(req,res)=>{
 },
 getIngresoCodigo:async(req,res)=>{
   const {_id}=req.params
-  const ingresos   =  await   ingreso.findById(_id)
+  const ingresos   =  await ingreso.findById(_id).populate('cliente').populate('sede');
   res.json({ingresos})
+},
+putIngreso: async (req, res) => {
+  try {
+    const { _id } = req.params;
+    const {codigo,cliente,sede} = req.body;
+    const IngresoActualizado = await ingreso.findByIdAndUpdate(  _id, { codigo,cliente,sede},  { new: true }
+    );
+    res.json({ Ingreso:IngresoActualizado });
+  } catch (error) {
+    res.status(500).json({ error: "Error al actualizar la Ingreso" });
+  }
 },
 }
 export default httpIngresos

@@ -4,7 +4,7 @@ import { json } from "express";
 
 const httpMaquinaria={
   getMaquinaria:async (req,res)=>{
-    const maquinarias  =  await  maquinaria.find()
+    const maquinarias  =  await  maquinaria.find().populate('idSede')
     res.json({maquinarias})
   
 },

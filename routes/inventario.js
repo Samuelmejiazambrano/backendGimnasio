@@ -4,12 +4,14 @@ import { validarCampos } from "../validaciones/validar.js";
 import httpInventario from "../controllers/inventario.js";
 import { validarJWT,generarJWT } from "../middlewares/validar-jwt.js";
 import helpersInventario from "../helpersClientes/inventario.js";
+import httpIngresos from "../controllers/ingresos.js";
 
 const inventario = Router();
 
 inventario.get("/",validarJWT, httpInventario.getInventario);
 inventario.get("/total",validarJWT, httpInventario.getTotal);
-
+inventario.get("/activos",validarJWT, httpInventario.getInventarioActivo);
+inventario.get("/inactivos", validarJWT,httpInventario.getInventarioInactivo);
 inventario.get("/:_id",validarJWT, httpInventario.getInventario);
 
 inventario.post(

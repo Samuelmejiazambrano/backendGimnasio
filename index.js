@@ -11,6 +11,8 @@ import sede from "./routes/sede.js"
 import usuario from "./routes/usuarios.js"
 import venta from "./routes/venta.js"
 import maquinaria from "./routes/maquinaria.js"
+import reset from "./routes/reset.js"
+
 import mantenimiento from "./routes/mantenimiento.js"
 
 const port = process.env.PORT || 4600;
@@ -30,6 +32,8 @@ app.use("/api/usuario",usuario)
 app.use("/api/venta",venta)
 app.use("/api/maquinas",maquinaria)
 app.use("/api/mantenimiento",mantenimiento)
+app.use("/api/reset",reset)
+         
 
 app.listen(port,()=>{
     console.log(`Servidor escuchando en el puerto ${port}`);

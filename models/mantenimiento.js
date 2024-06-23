@@ -5,10 +5,10 @@ const precioSchema = new mongoose.Schema({
   descripcion: { type: String, required: true },
   idMaquina:{type:mongoose.Schema.Types.ObjectId,ref:'maquinaria',required:true},
   fecha: { type: Date},
-  responsable: { type: String},
+  responsable:{type:mongoose.Schema.Types.ObjectId,ref:'Usuario',required:true},
   precio: { type: Number },
   createAt: { type: Date, default: Date.now },
-});
+});      
 
-export default mongoose.model("precio",precioSchema);
-     
+export default mongoose.model("precio",precioSchema);       
+                  
