@@ -17,7 +17,6 @@ const sendEmail = async (email, subject, payload, templatePath) => {
       },
     });
 
-    // Leer y personalizar la plantilla de correo electrónico
     const template = fs.readFileSync(path.resolve(templatePath), 'utf8');
     const emailContent = template.replace('{{link}}', payload.link);
 
@@ -25,10 +24,9 @@ const sendEmail = async (email, subject, payload, templatePath) => {
       from: `"soy tu padre 👻" <${process.env.FROM_EMAIL}>`,
       to: email,
       subject: subject,
-      html: emailContent, // Enviar el correo en formato HTML
+      html: emailContent, 
     };
 
-    // Enviar el correo electrónico
     const info = await transporter.sendMail(mailOptions);
     console.log('Correo enviado: %s', info.messageId);
     return { success: true };

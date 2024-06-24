@@ -17,8 +17,8 @@ const httpReset = {
         process.env.CLAVE_SECRETA_CORREO,
         { expiresIn: '2h' }      
       );   
-      // const link = `http://localhost:5173/#/nueva/contrasena?reset=${token}`;
-      const link = `https://backendgimnasio.onrender.com/nueva/contrasena?reset=${token}`;
+      const link = `http://localhost:5173/#/nueva/contrasena?reset=${token}`;
+      // const link = `https://backendgimnasio.onrender.com/#/nueva/contrasena?reset=${token}`;
 
 
       usuario.recuperacion = token;
