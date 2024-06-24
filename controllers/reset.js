@@ -18,7 +18,8 @@ const httpReset = {
         { expiresIn: '2h' }      
       );   
       // const link = `http://localhost:5173/#/nueva/contrasena?reset=${token}`;
-      const link = `https://backendgimnasio.onrender.com/#/nueva/contrasena?reset=${token}`;
+      const link = `https://backendgimnasio.onrender.com/api/nueva/contrasena?reset=${token}`;
+
 
       // Guardar el token de recuperación en el campo 'recuperacion' del usuario
       usuario.recuperacion = token;
@@ -34,7 +35,7 @@ const httpReset = {
       }
     } catch (error) {
       console.log('error 1', error);
-      return res.status(500).json({ msg: 'Ha ocurrido un error en el servidor' });
+      return res.status(500).json({ msg: 'Ha ocurrido un error en el servidoree' });
     }
   },
 
@@ -45,19 +46,16 @@ const httpReset = {
       return res.status(404).json({ msg: "Campos requeridos o inválidos" });
     }
     try {
-      // Buscar al usuario por el token de recuperación
       const usuario = await Usuario.findOne({ recuperacion: recuperacion });
       if (!usuario) {
         return res.status(404).json({ msg: 'Token inválido' });
       }
 
-      // Verificar el token JWT
       const jtoken = jwt.verify(recuperacion, process.env.CLAVE_SECRETA_CORREO);
       if (!jtoken) {
         return res.status(400).json({ msg: 'Token inválido' });
       }
 
-      // Validar la nueva contraseña
       if (typeof nuevaContrasena !== 'string') {
         return res.status(400).json({ msg: 'La nueva contraseña no es válida' });
       }
