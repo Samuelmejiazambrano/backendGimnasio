@@ -18,10 +18,9 @@ const httpReset = {
         { expiresIn: '2h' }      
       );   
       // const link = `http://localhost:5173/#/nueva/contrasena?reset=${token}`;
-      const link = `https://backendgimnasio.onrender.com/api/nueva/contrasena?reset=${token}`;
+      const link = `https://backendgimnasio.onrender.com/nueva/contrasena?reset=${token}`;
 
 
-      // Guardar el token de recuperación en el campo 'recuperacion' del usuario
       usuario.recuperacion = token;
       await usuario.save();
 
@@ -35,7 +34,7 @@ const httpReset = {
       }
     } catch (error) {
       console.log('error 1', error);
-      return res.status(500).json({ msg: 'Ha ocurrido un error en el servidoree' });
+      return res.status(500).json({ msg: 'Ha ocurrido un error en el servidor' });
     }
   },
 
@@ -56,6 +55,7 @@ const httpReset = {
         return res.status(400).json({ msg: 'Token inválido' });
       }
 
+      // Validar la nueva contraseña
       if (typeof nuevaContrasena !== 'string') {
         return res.status(400).json({ msg: 'La nueva contraseña no es válida' });
       }
