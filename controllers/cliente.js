@@ -6,7 +6,7 @@ import cron from "node-cron"
 
 const httpcliente={
   getCliente:async (req,res)=>{
-    const cliente  =  await  Cliente.find()
+    const cliente  =  await  Cliente.find();
     res.json({cliente})
   
 },
@@ -21,7 +21,7 @@ const httpcliente={
 postSeguimiento: async (req, res) => {
   const { _id } = req.params;
   const { fechaIngreso, peso, brazo, cintura, pie, estatura } = req.body;
-
+     
   const cliente = await Cliente.findById(_id);
 
   if (!cliente) {
