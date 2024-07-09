@@ -12,16 +12,17 @@ sede.get("/",validarJWT,httpSede.getSede);
 sede.get("/activos",validarJWT, httpSede.getSedeActivo);
 sede.get("/inactivos", validarJWT,httpSede.getSedeInactivo);
 sede.get("/:_id",validarJWT, httpSede.getSedeId);
-sede.post(
+sede.post(       
   "/",
-  [
+  [        
    
     check("codigo", "id no puede estar vacio").notEmpty(),
     check("codigo" ,"id minimo 2 numeros").isLength({ min: 4 }),
- 
+    check("codigo").custom(helpersSede.validarClienteUnica),
+
     validarCampos,validarJWT          
-  ],
-  httpSede.postSede),
+  ],       
+  httpSede.postSede),       
   
 
 sede.put(

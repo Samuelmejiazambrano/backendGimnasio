@@ -6,11 +6,11 @@ const sedeSchema=new mongoose.Schema({
     direccion:{type:String},
     ciudad:{type:String},
     telefono:{type:Number,default:0,required:true,unique:true},
-    estado:{type:Number,default:0},
+    estado:{type:Number,default:1},
     horario:{type:String},
   
    
     createAt:{type:Date,default:Date.now}
-})
+})            
 
-export default mongoose.model("sede",sedeSchema)                                   
+export default mongoose.model("sede",sedeSchema)                                             

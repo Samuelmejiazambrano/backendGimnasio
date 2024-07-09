@@ -1,17 +1,24 @@
-import Cliente from "../models/clientes.js"
-const helpersClientes={
-    validarClienteUnica:async (_id)=>{
-        const existe = await Cliente.find({_id})
-        if (existe){
-            throw new Error ("Id Existe")
-        }
-    },
-    validarExistaId:async (_id)=>{
-        const existe = await Cliente.findById(_id)
-        if (existe==undefined){
-            throw new Error ("Id no existe")
-        }
-    } 
-}
+import Cliente from "../models/clientes.js";
 
-export default helpersClientes
+const helpersClientes = {
+  validarClienteUnica: async (_id) => {
+    const existe = await Cliente.findOne({ _id });
+    if (existe) {
+      throw new Error("El ID ya existe");
+    }
+  },
+  validarExistaId: async (_id) => {
+    const existe = await Cliente.findById(_id);
+    if (!existe) {
+      throw new Error("El ID no existe");
+    }
+  },
+  validarCCUnica: async (cc) => {
+    const existe = await Cliente.findOne({ cc });
+    if (existe) {
+      throw new Error("La cédula ya existe");
+    }
+  },
+};
+
+export default helpersClientes;

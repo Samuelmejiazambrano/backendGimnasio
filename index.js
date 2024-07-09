@@ -32,7 +32,7 @@ app.use("/api/usuario",usuario)
 app.use("/api/venta",venta)
 app.use("/api/maquinas",maquinaria)
 app.use("/api/mantenimiento",mantenimiento)
-app.use("/api/reset",reset)
+app.use("/api/reset",reset) 
          
 
 app.listen(port,()=>{

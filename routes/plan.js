@@ -14,10 +14,11 @@ Plan.get("/:_id", validarJWT, httpPlan.getPlanCodigo);
 Plan.post(
   "/",
   [
-    check("codigo", "id no puede estar vacio").notEmpty(),
-    check("codigo", "id minimo 2 numeros").isLength({ min: 4 }),
-    check("CantDias", "ingresar cantidad de dias").notEmpty(),
-    validarCampos,
+    check("codigo", "El código no puede estar vacío").notEmpty(),
+    check("codigo", "El código debe tener al menos 4 caracteres").isLength({ min: 4 }),
+    check("codigo").custom(helpersPlan.validarClienteUnica),
+    check("CantDias", "Ingresar cantidad de días").notEmpty(),
+    validarCampos
   ],
   validarJWT,
   httpPlan.postPlan

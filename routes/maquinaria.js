@@ -1,29 +1,45 @@
 import { Router } from "express";
 import { check } from "express-validator";
 import { validarCampos } from "../validaciones/validar.js";
-import { validarJWT,generarJWT } from "../middlewares/validar-jwt.js";
-import httpMaquinaria from "../controllers/maquinaria.js";
+import { validarJWT, generarJWT } from "../middlewares/validar-jwt.js";
+import helpersIngreso from "../helpersClientes/ingreso.js";
 
+import httpMaquinaria from "../controllers/maquinaria.js";
 
 const maquinaria = Router();
 
-maquinaria.get("/",validarJWT, httpMaquinaria.getMaquinaria);
-maquinaria.get("/activos",[validarJWT], httpMaquinaria.getMaquinariaActivo);
-maquinaria.get("/inactivos",[validarJWT], httpMaquinaria.getMaquinariaInactivo);
-maquinaria.get("/:_id",[validarJWT], httpMaquinaria.getMaquinariaCodigo);
+maquinaria.get("/", validarJWT, httpMaquinaria.getMaquinaria);
+maquinaria.get("/activos", [validarJWT], httpMaquinaria.getMaquinariaActivo);
+maquinaria.get(
+  "/inactivos",
+  [validarJWT],
+  httpMaquinaria.getMaquinariaInactivo
+);
+maquinaria.get("/:_id", [validarJWT], httpMaquinaria.getMaquinariaCodigo);
 
 maquinaria.post(
-  "/",   httpMaquinaria.postMaquinaria);
-  maquinaria.put(
-  "/actualizar/:_id",[validarJWT], httpMaquinaria.putMaquinaria
+  "/",
+  [
+    check("codigo", "id no puede estar vacio").notEmpty(),
+    check("codigo").custom(helpersIngreso.validarClienteUnica),
+    check("codigo", "id minimo 2 numeros").isLength({ min: 4 }),
+
+    validarCampos
+  ],
+  httpMaquinaria.postMaquinaria
 );
-  
+maquinaria.put("/actualizar/:_id", [validarJWT], httpMaquinaria.putMaquinaria);
+
 maquinaria.put(
-  "/activar/:_id",[validarJWT], httpMaquinaria.putMaquinariaActivar
+  "/activar/:_id",
+  [validarJWT],
+  httpMaquinaria.putMaquinariaActivar
 ),
-maquinaria.put(
-  "/desactivar/:_id",[validarJWT],  httpMaquinaria.putMaquinariaDesactivar    
-)
+  maquinaria.put(
+    "/desactivar/:_id",
+    [validarJWT],
+    httpMaquinaria.putMaquinariaDesactivar
+  );
 // ingreso.put(
 //   "/:_id",
 //   [
@@ -52,5 +68,4 @@ maquinaria.put(
 //   httpInventario.putInventarioDesactivar
 // )
 
-
-export default maquinaria
+export default maquinaria;

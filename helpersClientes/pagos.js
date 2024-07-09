@@ -11,7 +11,13 @@ const helpersPagos={
         if (existe==undefined){
             throw new Error ("codigo no existe")
         }
-    } 
+    },
+    validarClienteUnica: async (codigo) => {
+        const existe = await pagos.findOne({ codigo });
+        if (existe) {
+          throw new Error("El código ya existe");
+        }
+      },
 }
 
 export default helpersPagos

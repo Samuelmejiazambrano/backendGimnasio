@@ -8,18 +8,20 @@ import { validarJWT } from "../middlewares/validar-jwt.js";
 const venta = Router();
 
 venta.get("/", validarJWT, httpVenta.getVenta);
+venta.get("/fechas", httpVenta.getTotalVentasEntreFechas);
+
 venta.get("/:_id", validarJWT, httpVenta.getVentaId);
 venta.post(         
   "/",         
-  [        
+  [                 
     check("codigoProducto", "id no puede estar vacio").notEmpty(),
     check("codigoProducto" ,"id minimo 2 numeros").isLength({ min: 4 }),
     validarCampos,validarJWT
-  ],
+  ],     
   
-  httpVenta.postVenta
+  httpVenta.postVenta                                       
 );
-
+                                     
 venta.put(
   "/activar/:_id",
   [

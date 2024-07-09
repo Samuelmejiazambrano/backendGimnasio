@@ -13,6 +13,8 @@ const pago = Router();
 pago.get("/", httpPagos.getPago);
 pago.get("/activos", httpPagos.getPagoActivo);
 pago.get("/inactivos",httpPagos.getPagoInactivo);
+pago.get("/fechas", httpPagos.getTotalPagosEntreFechas);
+
 pago.get("/:_id", httpPagos.getPagoId);
 
      
@@ -20,6 +22,7 @@ pago.post(
   "/",
   [
     check("codigo", "id no puede estar vacio").notEmpty(),
+    check("codigo").custom(helpersPagos.validarClienteUnica),    
     validarCampos
   ],
   httpPagos.postPago

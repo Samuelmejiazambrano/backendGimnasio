@@ -7,4 +7,4 @@ const ingresoSchema=new mongoose.Schema({
     createAt:{type:Date,default:Date.now}
 })
 
-export default mongoose.model("ingreso",ingresoSchema)
+export default mongoose.model("ingreso",ingresoSchema)               

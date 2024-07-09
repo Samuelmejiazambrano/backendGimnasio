@@ -13,7 +13,9 @@ ingreso.post(
   "/",       
   [
     check("codigo", "id no puede estar vacio").notEmpty(),
+    check("codigo").custom(helpersIngreso.validarClienteUnica),
     check("codigo" ,"id minimo 2 numeros").isLength({ min: 4 }),
+
     validarCampos
   ],
   validarJWT,          

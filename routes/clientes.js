@@ -14,15 +14,16 @@ router.post(
   [
     check("cc", "cc no puede estar vacio").notEmpty(),
     check("cc").isLength({ min: 8 }),
-    validarCampos
+    check("cc").custom(helpersClientes.validarCCUnica),
+    validarCampos,validarJWT
   ],
-  validarJWT,  
+    
   httpClientes.postCliente
 );
 router.post(
   "/seguimiento/:_id",
   [
-    // Validaciones para la ruta de seguimiento si es necesario
+
     validarCampos, validarJWT
   ],
  

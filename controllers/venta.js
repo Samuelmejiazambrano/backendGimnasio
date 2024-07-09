@@ -78,33 +78,34 @@ const httpVenta = {
   getTotalVentasEntreFechas: async (req, res) => {
     try {
       const { fechaInicio, fechaFin } = req.query;
-      const totalVentas = await venta.aggregate([
-        {
-          $match: {
-            createAt: {
-              $gte: new Date(fechaInicio),
-              $lte: new Date(fechaFin),
-            },
-          },
+  
+      if (!fechaInicio || !fechaFin) {
+        return res.status(400).json({ error: "Se requieren fechas de inicio y fin" });
+      }
+  
+      const startDate = new Date(fechaInicio);
+      const endDate = new Date(fechaFin);
+     
+      if (isNaN(startDate) || isNaN(endDate)) {
+        return res.status(400).json({ error: "Fechas inválidas" });
+      }
+  
+      const ventas = await venta.find({
+        createAt: {
+          $gte: startDate,
+          $lte: endDate,
         },
-        {
-          $group: {
-            _id: null,
-            total: { $sum: "$total" },
-          },
-        },
-      ]);
-
-      const total = totalVentas.length > 0 ? totalVentas[0].total : 0;
-
-      res.json({ total });
+      });
+    console.log(ventas);
+      res.json({ ventas });
     } catch (error) {
-      res
-        .status(4600)
-        .json({ error: "Error al obtener el total de las ventas" });
+      console.error("Error al obtener las ventas entre fechas:", error);
+      res.status(500).json({ error: "Error al obtener las ventas entre fechas" });
     }
   },
-
+  
+  
+  
   getTotalVentasPorProductoEntreFechas: async (req, res) => {
     try {
       const { _id, fechaInicio, fechaFin } = req.query;
