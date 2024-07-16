@@ -10,15 +10,15 @@ const ingreso = Router();
 ingreso.get("/", validarJWT, httpIngresos.getIngreso);
 ingreso.get("/:_id", validarJWT, httpIngresos.getIngresoCodigo);
 ingreso.post(
-  "/",       
-  [
+  "/",           
+  [    
     check("codigo", "id no puede estar vacio").notEmpty(),
     check("codigo").custom(helpersIngreso.validarClienteUnica),
     check("codigo" ,"id minimo 2 numeros").isLength({ min: 4 }),
 
     validarCampos
   ],
-  validarJWT,          
+  validarJWT,            
   httpIngresos.postIngreso
 );
 

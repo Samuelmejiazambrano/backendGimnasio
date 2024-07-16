@@ -6,7 +6,13 @@ import inventario from "../models/inventario.js";
 const httpVenta = {
   getVenta: async (req, res) => {
     const ventas = await venta.find().populate("codigoProducto");
-    res.json({ ventas });
+    let totalVentasGeneral = 0;
+    ventas.forEach((venta) => {
+      totalVentasGeneral += venta.totalVentas;
+    });
+    console.log(totalVentasGeneral);
+
+    res.json({ ventas ,totalVentasGeneral});
   },
   postVenta: async (req, res) => {
     const { fechaInicio, fechaFin, codigoProducto, cantidad } = req.body;
@@ -85,7 +91,7 @@ const httpVenta = {
   
       const startDate = new Date(fechaInicio);
       const endDate = new Date(fechaFin);
-     
+  
       if (isNaN(startDate) || isNaN(endDate)) {
         return res.status(400).json({ error: "Fechas inválidas" });
       }
@@ -95,14 +101,21 @@ const httpVenta = {
           $gte: startDate,
           $lte: endDate,
         },
+      }).populate("codigoProducto");
+  
+      // Calcular el total de  en el rango
+      let totalVentas = 0;
+      ventas.forEach((venta) => {
+        totalVentas += venta.totalVentas;
       });
-    console.log(ventas);
-      res.json({ ventas });
+  
+      res.json({ ventas,totalVentas });
     } catch (error) {
-      console.error("Error al obtener las ventas entre fechas:", error);
+      console.error("Error al obtener las ventas entre fechas:", error);   
       res.status(500).json({ error: "Error al obtener las ventas entre fechas" });
     }
   },
+  
   
   
   
@@ -166,6 +179,7 @@ const httpVenta = {
       res.status(500).json({ error: "Error al actualizar la Venta" });
     }
   },
+  
 };
 
 export default httpVenta;

@@ -14,14 +14,9 @@ const helpersIngreso={
             throw new Error ("Id no existe")
         }
     } ,
-    validarClienteUnica: async (codigo) => {
-        const existe = await ingreso.findOne({ codigo });
-        if (existe) {
-          throw new Error("El código ya existe");
-        }
-      },
+  
       validarClienteUnica: async (codigo) => {
-        const existe = await maquinaria.findOne({ codigo });
+        const existe = await ingreso.findOne({ codigo });
         if (existe) {
           throw new Error("El código ya existe");
         }

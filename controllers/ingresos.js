@@ -40,10 +40,11 @@ putIngreso: async (req, res) => {
   try {
     const { _id } = req.params;
     const {codigo,cliente,sede} = req.body;
-    const IngresoActualizado = await ingreso.findByIdAndUpdate(  _id, { codigo,cliente,sede},  { new: true }
+    const IngresoActualizado = await ingreso.findByIdAndUpdate( _id, { codigo,cliente,sede},  { new: true }
     );
     res.json({ Ingreso:IngresoActualizado });
   } catch (error) {
+  
     res.status(500).json({ error: "Error al actualizar la Ingreso" });
   }
 },

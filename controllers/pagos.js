@@ -57,7 +57,7 @@ const httpPagos = {
           $gte: startDate,
           $lte: endDate,
         },
-      });
+      }).populate('plan').populate('idCliente');
     console.log(pagos);
       res.json({ pagos });
     } catch (error) {
@@ -108,13 +108,17 @@ const httpPagos = {
   putPago: async (req, res) => {
     try {
       const { _id } = req.params;
-      const { codigo, plan, idClientes, valor } = req.body;
+      const { codigo, plan, idCliente, valor } = req.body;
       const PagoActualizado = await pago.findByIdAndUpdate(
         _id,
-        { codigo, plan, idClientes, valor },
+        { codigo, plan, idCliente, valor },
         { new: true }
       );
+      console.log(idCliente);
+     
+
       res.json({ usuarios: PagoActualizado });
+      
     } catch (error) {
       res.status(500).json({ error: "Error al actualizar el plan" });
     }

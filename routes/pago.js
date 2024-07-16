@@ -7,7 +7,7 @@ import helpersPagos from "../helpersClientes/pagos.js";
 
 const pago = Router();
 
-// pago.use(validarJWT);
+pago.use(validarJWT);
 
 // Rutas sin protección con validarJWT
 pago.get("/", httpPagos.getPago);
