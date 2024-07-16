@@ -2,17 +2,21 @@ import venta from "../models/venta.js";
 import plan from "../models/plan.js";
 
 import inventario from "../models/inventario.js";
-
+const formatNumber = (number) => {
+  return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+};
 const httpVenta = {
+
   getVenta: async (req, res) => {
     const ventas = await venta.find().populate("codigoProducto");
     let totalVentasGeneral = 0;
     ventas.forEach((venta) => {
       totalVentasGeneral += venta.totalVentas;
     });
+    totalVentasGeneral = formatNumber(totalVentasGeneral);
     console.log(totalVentasGeneral);
 
-    res.json({ ventas ,totalVentasGeneral});
+    res.json({ ventas, totalVentasGeneral });
   },
   postVenta: async (req, res) => {
     const { fechaInicio, fechaFin, codigoProducto, cantidad } = req.body;
@@ -103,12 +107,11 @@ const httpVenta = {
         },
       }).populate("codigoProducto");
   
-      // Calcular el total de  en el rango
       let totalVentas = 0;
       ventas.forEach((venta) => {
         totalVentas += venta.totalVentas;
       });
-  
+      totalVentas = formatNumber(totalVentas);
       res.json({ ventas,totalVentas });
     } catch (error) {
       console.error("Error al obtener las ventas entre fechas:", error);   

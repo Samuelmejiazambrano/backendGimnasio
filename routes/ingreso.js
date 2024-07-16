@@ -27,9 +27,9 @@ ingreso.put(
   [
     check("_id", "Se necesita un mongoId valido").isMongoId(),
     check("_id").custom(helpersIngreso.validarExistaId),
-    validarCampos,
+    validarCampos,validarJWT
   ],
-  validarJWT,
+  
   httpIngresos.putIngresoActivar
 );
 
