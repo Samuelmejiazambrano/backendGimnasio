@@ -11,7 +11,13 @@ const helpersInventario={
         if (existe==undefined){
             throw new Error ("Id no existe")
         }
-    } 
+    } ,
+    validarClienteUnica: async (codigo) => {
+        const existe = await inventario.findOne({ codigo });
+        if (existe) {
+          throw new Error("El código ya existe");
+        }
+      },
 }
 
 export default helpersInventario

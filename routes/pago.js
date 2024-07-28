@@ -47,7 +47,11 @@ pago.put(
   ],
   httpPagos.putPagoDesactivar
 );
-pago.put("/actualizar/:_id",validarJWT, httpPagos.putPago);
+pago.put("/actualizar/:_id", [
+  check("codigo", "codigo no puede estar vacio").notEmpty(),
+  check("codigo").custom(helpersPagos.validarClienteUnica),    
+  validarCampos
+],validarJWT, httpPagos.putPago);
 
 pago.get("/total/plan/:id", httpPagos.totalPagosPlan);
 pago.get("/total/clientes/:id", httpPagos.totalPagosCliente);

@@ -37,28 +37,30 @@ const httpPagos = {
     const pagos = await pago.find({ plans: _id });
     res.json(pagos);
   },
-    getTotalPagosEntreFechas: async (req, res) => {
+  getTotalPagosEntreFechas: async (req, res) => {
     try {
       const { fechaInicio, fechaFin } = req.query;
-  
+
       if (!fechaInicio || !fechaFin) {
         return res.status(400).json({ error: "Se requieren fechas de inicio y fin" });
       }
-  
+
       const startDate = new Date(fechaInicio);
       const endDate = new Date(fechaFin);
-     
+
       if (isNaN(startDate) || isNaN(endDate)) {
         return res.status(400).json({ error: "Fechas inválidas" });
       }
-  
+
+      endDate.setUTCHours(23, 59, 59, 999);
+
       const pagos = await pago.find({
         createAt: {
           $gte: startDate,
           $lte: endDate,
         },
       }).populate('plan').populate('idCliente');
-    console.log(pagos);
+      console.log(pagos);
       res.json({ pagos });
     } catch (error) {
       console.error("Error al obtener las ventas entre fechas:", error);

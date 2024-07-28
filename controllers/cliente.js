@@ -10,14 +10,25 @@ const httpcliente={
     res.json({cliente})
   
 },
-  postCliente:async(req,res)=>{
-          
-    const { cc,nombre,fechaIngreso,fechaNac,edad,direccion,telefono,estado,foto,plan,seguimiento}=req.body
-    const cliente = new Cliente({cc,nombre,fechaIngreso,fechaNac,edad,direccion,telefono,estado,foto,plan,seguimiento});
+postCliente: async (req, res) => {
+  const { cc, nombre, fechaIngreso, fechaNac, edad, direccion, telefono, estado, foto, plan, seguimiento } = req.body;
 
-     await cliente.save()        
-     res.json({cliente})      
+  try {
+    // Verificar si la cédula ya existe
+    const clienteExistente = await Cliente.findOne({ cc });
+    if (clienteExistente) {
+      return res.status(400).json({ message: "La cédula ya existe." });
+    }
+
+    const cliente = new Cliente({ cc, nombre, fechaIngreso, fechaNac, edad, direccion, telefono, estado, foto, plan, seguimiento });
+    await cliente.save();
+    res.json({ cliente });
+  } catch (error) {
+    console.error("Error al agregar cliente:", error);
+    res.status(500).json({ message: "Error al agregar cliente" });
+  }
 },
+
 postSeguimiento: async (req, res) => {
   const { _id } = req.params;
   const { fechaIngreso, peso, brazo, cintura, pie, estatura } = req.body;

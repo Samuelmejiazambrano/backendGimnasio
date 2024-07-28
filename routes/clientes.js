@@ -12,7 +12,7 @@ router.get("/:_id", validarJWT, httpClientes.getClienteCc);
 router.post(
   "/",
   [
-    check("cc", "cc no puede estar vacio").notEmpty(),
+    check("cc", "cc no puede estar vacio").notEmpty(),       
     check("cc").isLength({ min: 8 }),
     check("cc").custom(helpersClientes.validarCCUnica),
     validarCampos,validarJWT
@@ -32,11 +32,11 @@ router.post(
 router.put(
   "/:_id",
   [
-    check("_id", "Se necesita un mongoCc valido").isMongoId(),
-    check("_id").custom(helpersClientes.validarExistaId),
-    validarCampos,
-  ],
-  validarJWT,       
+    check("cc", "cc no puede estar vacio").notEmpty(),       
+    check("cc").isLength({ min: 8 }),
+    check("cc").custom(helpersClientes.validarCCUnica),
+    validarCampos,validarJWT
+  ],       
   httpClientes.putcliente              
 );
 router.put(              

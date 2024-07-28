@@ -10,15 +10,15 @@ const ingreso = Router();
 ingreso.get("/", validarJWT, httpIngresos.getIngreso);
 ingreso.get("/:_id", validarJWT, httpIngresos.getIngresoCodigo);
 ingreso.post(
-  "/",           
-  [    
+  "/",
+  [
     check("codigo", "id no puede estar vacio").notEmpty(),
     check("codigo").custom(helpersIngreso.validarClienteUnica),
-    check("codigo" ,"id minimo 2 numeros").isLength({ min: 4 }),
+    check("codigo", "id minimo 2 numeros").isLength({ min: 4 }),
 
-    validarCampos
+    validarCampos,
   ],
-  validarJWT,            
+  validarJWT,
   httpIngresos.postIngreso
 );
 
@@ -27,22 +27,34 @@ ingreso.put(
   [
     check("_id", "Se necesita un mongoId valido").isMongoId(),
     check("_id").custom(helpersIngreso.validarExistaId),
-    validarCampos,validarJWT
+    validarCampos,
+    validarJWT,
   ],
-  
+
   httpIngresos.putIngresoActivar
 );
 
 ingreso.put(
   "/desactivar/:_id",
   [
-    check("_id","Se necesita un mongoCc valido").isMongoId(),
+    check("_id", "Se necesita un mongoCc valido").isMongoId(),
     check("_id").custom(helpersIngreso.validarExistaId),
     validarCampos,
   ],
   validarJWT,
   httpIngresos.putIngresoDesactivar
 );
-ingreso.put("/actualizar/:_id",validarJWT, httpIngresos.putIngreso);
+ingreso.put(
+  "/actualizar/:_id",
+  [
+    check("codigo", "id no puede estar vacio").notEmpty(),
+    check("codigo").custom(helpersIngreso.validarClienteUnica),
+    check("codigo", "id minimo 2 numeros").isLength({ min: 4 }),
+
+    validarCampos,
+  ],
+  validarJWT,
+  httpIngresos.putIngreso
+);
 
 export default ingreso;

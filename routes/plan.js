@@ -26,6 +26,11 @@ Plan.post(
 
 Plan.put("/activar/:_id", validarJWT, httpPlan.putPlanActivar);
 Plan.put("/desactivar/:_id", validarJWT, httpPlan.putPlanDesactivar);
-Plan.put("/actualizar/:_id", validarJWT, httpPlan.putPlan);
+Plan.put("/actualizar/:_id",  [
+  check("codigo", "El código no puede estar vacío").notEmpty(),
+  check("codigo", "El código debe tener al menos 4 caracteres").isLength({ min: 4 }),
+  check("codigo").custom(helpersPlan.validarClienteUnica),
+  validarCampos
+], validarJWT, httpPlan.putPlan);
 
 export default Plan;

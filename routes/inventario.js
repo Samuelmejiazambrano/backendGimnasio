@@ -17,7 +17,7 @@ inventario.get("/:_id",validarJWT, httpInventario.getInventario);
 inventario.post(
   "/",
   [
-      
+    check("codigo").custom(helpersInventario.validarClienteUnica),
     check("codigo", "id no puede estar vacio").notEmpty(),
     validarCampos,validarJWT
   ],
@@ -51,7 +51,11 @@ inventario.put(
   httpInventario.putInventarioDesactivar
 ),
 
-inventario.put("/actualizar/:_id",validarJWT, httpInventario.putInventario);
+inventario.put("/actualizar/:_id",  [
+  check("codigo").custom(helpersInventario.validarClienteUnica),
+  check("codigo", "id no puede estar vacio").notEmpty(),
+  validarCampos,validarJWT
+],validarJWT, httpInventario.putInventario);
 inventario.delete("/:_id",validarJWT, httpInventario.deleteInventario);
 
 export default inventario

@@ -1,12 +1,13 @@
 import venta from "../models/venta.js";
 import plan from "../models/plan.js";
-
 import inventario from "../models/inventario.js";
+import mongoose from "mongoose";
+
 const formatNumber = (number) => {
   return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
 };
-const httpVenta = {
 
+const httpVenta = {
   getVenta: async (req, res) => {
     const ventas = await venta.find().populate("codigoProducto");
     let totalVentasGeneral = 0;
@@ -18,6 +19,7 @@ const httpVenta = {
 
     res.json({ ventas, totalVentasGeneral });
   },
+
   postVenta: async (req, res) => {
     const { fechaInicio, fechaFin, codigoProducto, cantidad } = req.body;
 
@@ -70,6 +72,7 @@ const httpVenta = {
     );
     res.json({ ventas });
   },
+
   putventaDesactivar: async (req, res) => {
     const { _id } = req.params;
     const ventas = await venta.findByIdAndUpdate(
@@ -79,6 +82,7 @@ const httpVenta = {
     );
     res.json({ ventas });
   },
+
   getVentaId: async (req, res) => {
     const { _id } = req.params;
     const ventas = await venta.findById(_id);
@@ -100,28 +104,31 @@ const httpVenta = {
         return res.status(400).json({ error: "Fechas inválidas" });
       }
   
+      // Ajustar la fecha de fin para incluir todo el día
+      endDate.setUTCHours(23, 59, 59, 999);
+  
       const ventas = await venta.find({
         createAt: {
           $gte: startDate,
           $lte: endDate,
         },
-      }).populate("codigoProducto");
+      }).populate('codigoProducto');
+      console.log("Ventas encontradas:", ventas);
   
       let totalVentas = 0;
       ventas.forEach((venta) => {
         totalVentas += venta.totalVentas;
       });
+  
       totalVentas = formatNumber(totalVentas);
-      res.json({ ventas,totalVentas });
+      res.json({ ventas, totalVentas });
     } catch (error) {
-      console.error("Error al obtener las ventas entre fechas:", error);   
+      console.error("Error al obtener las ventas entre fechas:", error);
       res.status(500).json({ error: "Error al obtener las ventas entre fechas" });
     }
   },
   
-  
-  
-  
+
   getTotalVentasPorProductoEntreFechas: async (req, res) => {
     try {
       const { _id, fechaInicio, fechaFin } = req.query;
@@ -154,6 +161,7 @@ const httpVenta = {
         });
     }
   },
+
   putVenta: async (req, res) => {
     try {
       const { _id } = req.params;
@@ -165,6 +173,32 @@ const httpVenta = {
         valorUnitario,
         totalVentas,
       } = req.body;
+
+      const ventaExistente = await venta.findById(_id);
+      if (!ventaExistente) {
+        return res.status(404).json({ message: "Venta no encontrada" });
+      }
+
+      const producto = await inventario.findById(ventaExistente.codigoProducto);
+      if (!producto) {
+        return res.status(404).json({ error: "El producto no existe" });
+      }
+
+      if (cantidad !== undefined) {
+        const diferenciaCantidad = cantidad - ventaExistente.cantidad;
+
+        if (diferenciaCantidad > 0) {
+          if (producto.cantidad < diferenciaCantidad) {
+            return res.status(400).json({ error: "No hay suficiente cantidad en inventario" });
+          }
+          producto.cantidad -= diferenciaCantidad;
+        } else if (diferenciaCantidad < 0) {
+          producto.cantidad += Math.abs(diferenciaCantidad);
+        }
+
+        await producto.save();
+      }
+
       const VentaActualizado = await venta.findByIdAndUpdate(
         _id,
         {
@@ -177,12 +211,13 @@ const httpVenta = {
         },
         { new: true }
       );
+
       res.json({ Venta: VentaActualizado });
     } catch (error) {
+      console.log(error);
       res.status(500).json({ error: "Error al actualizar la Venta" });
     }
   },
-  
 };
 
 export default httpVenta;

@@ -12,11 +12,12 @@ const helpersClientes = {
     if (!existe) {
       throw new Error("El ID no existe");
     }
-  },
+},
   validarCCUnica: async (cc) => {
     const existe = await Cliente.findOne({ cc });
+    console.log(existe);
     if (existe) {
-      throw new Error("La cédula ya existe");
+      throw new Error("La cédula ya existess");
     }
   },
 };
