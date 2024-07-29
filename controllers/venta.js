@@ -169,9 +169,7 @@ const httpVenta = {
         fechaInicio,
         fechaFin,
         codigoProducto,
-        cantidad,
-        valorUnitario,
-        totalVentas,
+        cantidad
       } = req.body;
 
       const ventaExistente = await venta.findById(_id);
@@ -181,7 +179,7 @@ const httpVenta = {
 
       const producto = await inventario.findById(ventaExistente.codigoProducto);
       if (!producto) {
-        return res.status(404).json({ error: "El producto no existe" });
+        return res.status(404).json({ error: "El producto no existe" });     
       }
 
       if (cantidad !== undefined) {
@@ -198,6 +196,9 @@ const httpVenta = {
 
         await producto.save();
       }
+      const valorUnitario = producto.valor;
+
+      const totalVentas = valorUnitario * cantidad;
 
       const VentaActualizado = await venta.findByIdAndUpdate(
         _id,
