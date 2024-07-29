@@ -90,9 +90,24 @@ getListar:async (req,res)=>{
   res.json({plan})
 },
 async getCumple(req, res) {
-  const clientes = await Cliente.find({ fechaNac:{ $gte: new Date(new Date().setDate(new Date().getDate() - 30)) } });
-  res.json(clientes);
+  try {
+    const today = new Date();
+    const currentMonth = today.getMonth() + 1; 
+
+    const clientes = await Cliente.find();
+
+    const clientesCumple = clientes.filter(cliente => {
+      const fechaNac = new Date(cliente.fechaNac);
+      return fechaNac.getMonth() + 1 === currentMonth;
+    });
+
+    res.json(clientesCumple);
+  } catch (error) {
+    console.error("Error al obtener clientes con cumpleaños en el mes actual:", error);
+    res.status(500).json({ message: "Error al obtener clientes con cumpleaños en el mes actual" });
+  }
 },
+
 
 getTotalPer:async (req,res)=>{
     const cantidadCliente = await Cliente.countDocuments();
