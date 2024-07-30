@@ -12,7 +12,7 @@ usuario.get("/",[validarJWT], httpUsuarios.getUsuario);
 usuario.get("/activos",[validarJWT], httpUsuarios.getUsuarioActivo);
 usuario.get("/inactivos",[validarJWT], httpUsuarios.getUsuarioInactivo);
 
-usuario.get("/:_id",[validarJWT],httpUsuarios.getUsuarioId);
+usuario.get("/:_id",[validarJWT],httpUsuarios.getUsuarioId);    
 usuario.post("/login", httpUsuarios.login);
 usuario.post(
   "/",     
@@ -21,6 +21,8 @@ usuario.post(
     // check("", "id no puede estar vacio").notEmpty(),
     // check("_id" ,"id minimo 2 numeros").isLength({ min: 4 }),
     // check("estado","Solo numeros").isNumeric(),
+    check("email").custom(helpersUsuarios.validarEmailUnico),
+
     validarCampos,validarJWT
   ],
   httpUsuarios.postUsuario),

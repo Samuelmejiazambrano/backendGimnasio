@@ -28,7 +28,11 @@ maquinaria.post(
   ],
   httpMaquinaria.postMaquinaria
 );
-maquinaria.put("/actualizar/:_id", [validarJWT], httpMaquinaria.putMaquinaria);
+maquinaria.put("/actualizar/:_id", [
+  check("codigo").custom((codigo, { req }) => helpersIngreso.ClienteUnicaeditarMaquina(codigo, { req })),
+
+  validarCampos,
+], [validarJWT], httpMaquinaria.putMaquinaria);
 
 maquinaria.put(
   "/activar/:_id",

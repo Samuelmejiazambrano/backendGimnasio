@@ -17,7 +17,7 @@ const httpVenta = {
     totalVentasGeneral = formatNumber(totalVentasGeneral);
     console.log(totalVentasGeneral);
 
-    res.json({ ventas, totalVentasGeneral });
+    res.json({ ventas, totalVentasGeneral });   
   },
 
   postVenta: async (req, res) => {

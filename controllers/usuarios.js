@@ -5,7 +5,7 @@ import { json } from "express";
 
 const httpUsuario = {
   getUsuario: async (req, res) => {
-    const usuario = await Usuario.find();
+    const usuario = await Usuario.find().populate('sede');
     res.json({ usuario });
   },
   postUsuario: async (req, res) => {

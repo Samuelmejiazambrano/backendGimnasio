@@ -48,10 +48,11 @@ pago.put(
   httpPagos.putPagoDesactivar
 );
 pago.put("/actualizar/:_id", [
-  check("codigo", "codigo no puede estar vacio").notEmpty(),
-  check("codigo").custom(helpersPagos.validarClienteUnica),    
+  check("codigo", "El código no puede estar vacío").notEmpty(),
+  check("codigo").custom((codigo, { req }) => helpersPagos.ClienteUnicaeditar(codigo, { req })),
   validarCampos
-],validarJWT, httpPagos.putPago);
+], validarJWT, httpPagos.putPago);
+
 
 pago.get("/total/plan/:id", httpPagos.totalPagosPlan);
 pago.get("/total/clientes/:id", httpPagos.totalPagosCliente);

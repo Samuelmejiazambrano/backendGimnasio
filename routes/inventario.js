@@ -52,7 +52,7 @@ inventario.put(
 ),
 
 inventario.put("/actualizar/:_id",  [
-  check("codigo").custom(helpersInventario.validarClienteUnica),
+  check("codigo").custom((codigo, { req }) => helpersInventario.ClienteUnicaeditar(codigo, { req })),
   check("codigo", "id no puede estar vacio").notEmpty(),
   validarCampos,validarJWT
 ],validarJWT, httpInventario.putInventario);

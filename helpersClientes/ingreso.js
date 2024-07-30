@@ -21,6 +21,20 @@ const helpersIngreso={
           throw new Error("El código ya existe");
         }
       },
+      ClienteUnicaeditar: async (codigo, { req }) => {
+        const { _id } = req.params;
+        const codigos = await ingreso.findOne({ codigo });
+        if (codigos && codigos._id.toString() !== _id.toString()) {
+          throw new Error("El código ya existe al editar");
+        }
+      },
+      ClienteUnicaeditarMaquina: async (codigo, { req }) => {
+        const { _id } = req.params;
+        const codigos = await maquinaria.findOne({ codigo });
+        if (codigos && codigos._id.toString() !== _id.toString()) {
+          throw new Error("El código ya existe al editar");
+        }
+      },
 }
 
 export default helpersIngreso

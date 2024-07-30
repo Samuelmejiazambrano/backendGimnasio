@@ -18,6 +18,13 @@ const helpersInventario={
           throw new Error("El código ya existe");
         }
       },
+      ClienteUnicaeditar: async (codigo, { req }) => {
+        const { _id } = req.params;
+        const codigos = await inventario.findOne({ codigo });
+        if (codigos && codigos._id.toString() !== _id.toString()) {
+          throw new Error("El código ya existe al editar");
+        }
+      },
 }
 
 export default helpersInventario

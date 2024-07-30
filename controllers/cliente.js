@@ -79,8 +79,8 @@ getClienteCc:async(req,res)=>{
 },
 putcliente:async(req,res)=>{
   const {_id}=req.params
-  const {nombre,fechaIngreso,fechaNac,edad,direccion,telefono,estado,foto,seguimiento}=req.body
-  const clientes = await Cliente.findByIdAndUpdate(_id,{nombre,fechaIngreso,fechaNac,edad,direccion,telefono,estado,foto,seguimiento }) 
+  const {cc,nombre,fechaIngreso,fechaNac,edad,direccion,telefono,estado,foto,seguimiento}=req.body
+  const clientes = await Cliente.findByIdAndUpdate(_id,{cc,nombre,fechaIngreso,fechaNac,edad,direccion,telefono,estado,foto,seguimiento }) 
   res.json({clientes})
 },
 

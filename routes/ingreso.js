@@ -48,7 +48,7 @@ ingreso.put(
   "/actualizar/:_id",
   [
     check("codigo", "id no puede estar vacio").notEmpty(),
-    check("codigo").custom(helpersIngreso.validarClienteUnica),
+    check("codigo").custom((codigo, { req }) => helpersIngreso.ClienteUnicaeditar(codigo, { req })),
     check("codigo", "id minimo 2 numeros").isLength({ min: 4 }),
 
     validarCampos,

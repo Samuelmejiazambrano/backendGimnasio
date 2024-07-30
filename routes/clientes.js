@@ -34,7 +34,7 @@ router.put(
   [
     check("cc", "cc no puede estar vacio").notEmpty(),       
     check("cc").isLength({ min: 8 }),
-    check("cc").custom(helpersClientes.validarCCUnica),
+    check("cc").custom((cc, { req }) => helpersClientes.ClienteUnicaeditar(cc, { req })),
     validarCampos,validarJWT
   ],       
   httpClientes.putcliente              

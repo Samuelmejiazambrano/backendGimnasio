@@ -1,3 +1,4 @@
+import clientes from "../models/clientes.js";
 import Cliente from "../models/clientes.js";
 
 const helpersClientes = {
@@ -18,6 +19,14 @@ const helpersClientes = {
     console.log(existe);
     if (existe) {
       throw new Error("La cédula ya existess");
+    }
+  },
+  
+  ClienteUnicaeditar: async (cc, { req }) => {
+    const { _id } = req.params;
+    const codigos = await clientes.findOne({ cc });
+    if (codigos && codigos._id.toString() !== _id.toString()) {
+      throw new Error("El código ya existe al editar");
     }
   },
 };

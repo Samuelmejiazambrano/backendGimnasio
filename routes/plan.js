@@ -29,7 +29,7 @@ Plan.put("/desactivar/:_id", validarJWT, httpPlan.putPlanDesactivar);
 Plan.put("/actualizar/:_id",  [
   check("codigo", "El código no puede estar vacío").notEmpty(),
   check("codigo", "El código debe tener al menos 4 caracteres").isLength({ min: 4 }),
-  check("codigo").custom(helpersPlan.validarClienteUnica),
+  check("codigo").custom((codigo, { req }) => helpersPlan.ClienteUnicaeditar(codigo, { req })),
   validarCampos
 ], validarJWT, httpPlan.putPlan);
 
